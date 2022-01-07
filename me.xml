@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE student PUBLIC "-//Portland State University//DTD CS410J Grade Book//EN" "http://www.cs.pdx.edu/~whitlock/dtds/gradebook.dtd">
+<student enrolled-section="undergraduate">
+<id>yif</id>
+<firstName>Yifan</firstName>
+<lastName>Zhao</lastName>
+<email>yif@pdx.edu</email>
+<major>CS</major>
+<notes>
+<note>Yifan Zhao would like to learn Everything! Especially something will be really ha real job.</note>
+<note>Yifan Zhao has these comments: No</note>
+</notes>
+</student>
