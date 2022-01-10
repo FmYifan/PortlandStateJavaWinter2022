@@ -28,7 +28,7 @@ accordingly
   </parent>
       
   
-  <groupId>edu.pdx.cs410J.YourUserId</groupId>
+  <groupId>edu.pdx.cs410J.yif</groupId>
       
   
   <artifactId>PortlandStateJavaWinter2022</artifactId>
