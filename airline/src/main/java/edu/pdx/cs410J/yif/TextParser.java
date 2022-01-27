@@ -64,7 +64,7 @@ public class TextParser implements AirlineParser<Airline> {
             throw new ParserException("While parsing the file, the format of the departure date is incorrect.");
           }
         } else{
-          throw new IOException("The departure date is missing.");
+          throw new IOException("The departure date is missing");
         }
         if(br.ready()){
           departTime = br.readLine();
@@ -87,7 +87,7 @@ public class TextParser implements AirlineParser<Airline> {
             throw new ParserException("While parsing the file, the destination airport code does not contain three letters.");
           }
         } else{
-          throw new IOException("The destination is missing.");
+          throw new IOException("The destination is missing");
         }
 
         if(br.ready()) {
@@ -117,7 +117,8 @@ public class TextParser implements AirlineParser<Airline> {
       return airline;
 
     } catch (IOException e) {
-      throw new ParserException("While parsing airline text", e);
+      System.err.print(e.getMessage());
+      throw new ParserException(" while parsing airline text", e);
     }
   }
 }
