@@ -76,6 +76,22 @@ public class Flight extends AbstractFlight {
   }
 
   /**
+   * get the departure date
+   * @return departure date
+   */
+  public String getDepartureDate(){
+    return departureDate;
+  }
+
+  /**
+   * get the departure time
+   * @return departure time
+   */
+  public String getDepartureTime(){
+    return departureTime;
+  }
+
+  /**
    * get the destination airport of the flight
    * @return the destination airport
    */
@@ -95,5 +111,21 @@ public class Flight extends AbstractFlight {
       return null;
     }
     return arrivalDate + " " + arrivalTime;
+  }
+
+  /**
+   * get the arrival date
+   * @return arrival date
+   */
+  public String getArrivalDate(){
+    return arrivalDate;
+  }
+
+  /**
+   * get the arrival time
+   * @return arrival time
+   */
+  public String getArrivalTime(){
+    return arrivalTime;
   }
 }

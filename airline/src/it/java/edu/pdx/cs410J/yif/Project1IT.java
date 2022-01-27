@@ -146,4 +146,52 @@ class Project1IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain("-print", "-README", "Name", "2", "src", "10/19/2022", "0:0", "des", "1/20/2022", "12:30");
         assertThat(result.getExitCode(), equalTo(0));
     }
+
+    /**
+     * Tests if unknown option issues an error
+     */
+    @Test
+    void testUnknownOption(){
+        MainMethodResult result = invokeMain("-print", "-fake", "Name", "2", "src", "10/19/2022", "0:0", "des", "1/20/2022", "12:30");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("An unknown option was present."));
+    }
+
+    /**
+     * Tests if different airline name with the one in the file issues an error
+     */
+    @Test
+    void testDiffAirline(){
+        MainMethodResult result = invokeMain("-textFile", "src/test/textfile/diffNameTest.txt", "Test2", "2", "src", "10/19/2022", "0:0", "des", "1/20/2022", "12:30");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("The airline name loaded from the file specified is not the same as the name passed through command line."));
+    }
+
+
+    /**
+     * Tests if incomplete flight info in the file issues an error
+     */
+    @Test
+    void testIncompleteFlightParse(){
+        MainMethodResult result = invokeMain("-textFile", "src/test/textfile/incompleteFlightTest.txt", "Test3", "2", "src", "10/19/2022", "0:0", "des", "1/20/2022", "12:30");
+        assertThat(result.getExitCode(), equalTo(1));
+    }
+
+    /**
+     * Tests if the malformatted flight info in the file issues an error
+     */
+    @Test
+    void testMalformattedFlight(){
+        MainMethodResult result = invokeMain("-textFile", "src/test/textfile/malformattedFlightTest.txt", "Test4", "2", "src", "10/19/2022", "0:0", "des", "1/20/2022", "12:30");
+        assertThat(result.getExitCode(), equalTo(1));
+    }
+
+    /**
+     * Tests if the -textFile option works correctly
+     */
+    @Test
+    void testTextFileCorrect(){
+        MainMethodResult result = invokeMain("-textFile", "src/test/textfile/textFileTest.txt", "Test5", "40", "src", "10/19/2022", "0:0", "des", "1/20/2022", "12:30");
+        assertThat(result.getExitCode(), equalTo(0));
+    }
 }
