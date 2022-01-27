@@ -162,7 +162,7 @@ class Project1IT extends InvokeMainTestCase {
      */
     @Test
     void testDiffAirline(){
-        MainMethodResult result = invokeMain("-textFile", "src/test/textfile/diffNameTest.txt", "Test2", "2", "src", "10/19/2022", "0:0", "des", "1/20/2022", "12:30");
+        MainMethodResult result = invokeMain("-textFile", "src/test/textfile/edu.pdx.cs410J.yif/diffNameTest.txt", "Test2", "2", "src", "10/19/2022", "0:0", "des", "1/20/2022", "12:30");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("The airline name loaded from the file specified is not the same as the name passed through command line."));
     }
@@ -173,7 +173,7 @@ class Project1IT extends InvokeMainTestCase {
      */
     @Test
     void testIncompleteFlightParse(){
-        MainMethodResult result = invokeMain("-textFile", "src/test/textfile/incompleteFlightTest.txt", "Test3", "2", "src", "10/19/2022", "0:0", "des", "1/20/2022", "12:30");
+        MainMethodResult result = invokeMain("-textFile", "src/test/textfile/edu.pdx.cs410J.yif/incompleteFlightTest.txt", "Test3", "2", "src", "10/19/2022", "0:0", "des", "1/20/2022", "12:30");
         assertThat(result.getExitCode(), equalTo(1));
     }
 
@@ -182,7 +182,7 @@ class Project1IT extends InvokeMainTestCase {
      */
     @Test
     void testMalformattedFlight(){
-        MainMethodResult result = invokeMain("-textFile", "src/test/textfile/malformattedFlightTest.txt", "Test4", "2", "src", "10/19/2022", "0:0", "des", "1/20/2022", "12:30");
+        MainMethodResult result = invokeMain("-textFile", "src/test/textfile/edu.pdx.cs410J.yif/malformattedFlightTest.txt", "Test4", "2", "src", "10/19/2022", "0:0", "des", "1/20/2022", "12:30");
         assertThat(result.getExitCode(), equalTo(1));
     }
 
@@ -191,7 +191,7 @@ class Project1IT extends InvokeMainTestCase {
      */
     @Test
     void testTextFileCorrect(){
-        MainMethodResult result = invokeMain("-textFile", "src/test/textfile/textFileTest.txt", "Test5", "40", "src", "10/19/2022", "0:0", "des", "1/20/2022", "12:30");
+        MainMethodResult result = invokeMain("-textFile", "src/test/textfile/edu.pdx.cs410J.yif/textFileTest.txt", "Test5", "40", "src", "10/19/2022", "0:0", "des", "1/20/2022", "12:30");
         assertThat(result.getExitCode(), equalTo(0));
     }
 }
