@@ -8,9 +8,9 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 /**
- * The main class for the CS410J airline Project
+ * The main class for the CS410J airline Project 2
  */
-public class Project1 {
+public class Project2 {
 
   /**
    * The main method
@@ -23,7 +23,7 @@ public class Project1 {
     if(args.length == 0){
       //System.out.println("No command line arguments are passed in.");
       System.err.println("Missing command line arguments");
-      System.out.println("usage: java edu.pdx.cs410J.<login-id>.Project1 [options] <args>\n" +
+      System.out.println("usage: java edu.pdx.cs410J.<login-id>.Project2 [options] <args>\n" +
               "args are (in this order):\n" +
               "airline \t The name of the airline\n" +
               "flightNumber \t The flight number\n" +
@@ -32,6 +32,7 @@ public class Project1 {
               "dest \t Three-letter code of arrival airport\n" +
               "arrive \t Arrival date and time (24-hour time)\n" +
               "options are (options may appear in any order):\n" +
+              "-textFile file  Where to read/write the airline info" +
               "-print \t Prints a description of the new flight\n" +
               "-README \t Prints a README for this project and exits\n" +
               "Date and time should be in the format: mm/dd/yyyy hh:mm");
@@ -52,7 +53,7 @@ public class Project1 {
 
         //For option -README, print the README and end the program
         case "-README":
-          InputStream readme = Project1.class.getResourceAsStream("README.txt");
+          InputStream readme = Project2.class.getResourceAsStream("README.txt");
           BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
           String line;
           while ((line = reader.readLine()) != null) {
