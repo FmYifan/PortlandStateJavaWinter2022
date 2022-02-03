@@ -1,20 +1,23 @@
 package edu.pdx.cs410J.yif;
 
 import edu.pdx.cs410J.AbstractFlight;
+import edu.pdx.cs410J.AirportNames;
+
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * The class that extends AbstractFlight. A Flight contains a flight number, a source airport, a departure date, a departure time,
  * a destination airport, an arrival date, an arrival time.
  */
-public class Flight extends AbstractFlight {
+public class Flight extends AbstractFlight implements Comparable<Flight>{
 
   private int number;
   private String source;
-  private String departureDate;
-  private String departureTime;
+  private Date departDate;
   private String destination;
-  private String arrivalDate;
-  private String arrivalTime;
+  private Date arrivalDate;
 
   /**
    * The default constructor
@@ -27,20 +30,38 @@ public class Flight extends AbstractFlight {
    *  The constructor with arguments that initialize the fields of this class
    * @param number  the flight number
    * @param source  the source airport
-   * @param departureDate   the departure date
-   * @param departureTime   the departure time
+   * @param departDate   the departure date
    * @param destination   the destination airport
    * @param arrivalDate   the arrival date
-   * @param arrivalTime   the arrival time
    */
-  public Flight(int number, String source, String departureDate, String departureTime, String destination, String arrivalDate, String arrivalTime){
+  public Flight(int number, String source, /*String departureDate, String departureTime,*/Date departDate, String destination, /*String arrivalDate, String arrivalTime*/Date arrivalDate){
     this.number = number;
     this.source = source;
-    this.departureDate = departureDate;
-    this.departureTime = departureTime;
+    this.departDate = departDate;
     this.destination = destination;
     this.arrivalDate = arrivalDate;
-    this.arrivalTime = arrivalTime;
+  }
+
+  public int compareTo(Flight flight){
+    int test = source.compareToIgnoreCase(flight.source);
+    if(test > 0){
+      return 1;
+    }
+    else if(test == 0){
+      int test2 = departDate.compareTo(flight.departDate);
+      if(test2 > 0){
+        return 1;
+      }
+      else if(test2 == 0){
+        return 0;
+      }
+      else{
+        return -1;
+      }
+    }
+    else{
+      return -1;
+    }
   }
 
   /**
@@ -63,32 +84,26 @@ public class Flight extends AbstractFlight {
   }
 
   /**
-   * get the departure date and time of the flight
-   * @return  the departure date and time
+   * get the departure date and time of the flight using String
+   * @return  the departure date and time using String
    */
   @Override
   public String getDepartureString() {
-    //throw new UnsupportedOperationException("This method is not implemented yet");
-    if(departureDate == null || departureTime == null){
-      return null;
+    if(departDate != null) {
+      int f = DateFormat.SHORT;
+      DateFormat df = DateFormat.getDateTimeInstance(f, f, Locale.US);
+      return df.format(departDate);
     }
-    return departureDate + " " + departureTime;
+    return null;
   }
 
   /**
-   * get the departure date
-   * @return departure date
+   * get the departure date of the flight
+   * @return the departure date
    */
-  public String getDepartureDate(){
-    return departureDate;
-  }
-
-  /**
-   * get the departure time
-   * @return departure time
-   */
-  public String getDepartureTime(){
-    return departureTime;
+  @Override
+  public Date getDeparture(){
+    return departDate;
   }
 
   /**
@@ -102,30 +117,49 @@ public class Flight extends AbstractFlight {
   }
 
   /**
-   * get the arrival date and time of the flight
-   * @return  the arrival date and time
+   * get the arrival date and time of the flight using String
+   * @return  the arrival date and time using String
    */
   @Override
   public String getArrivalString() {
-    if(arrivalDate == null || arrivalTime == null){
-      return null;
+    if(arrivalDate != null) {
+      int f = DateFormat.SHORT;
+      DateFormat df = DateFormat.getDateTimeInstance(f, f, Locale.US);
+      return df.format(arrivalDate);
     }
-    return arrivalDate + " " + arrivalTime;
+    return null;
   }
 
   /**
-   * get the arrival date
-   * @return arrival date
+   * get the arrival date of the flight
+   * @return the arrival date
    */
-  public String getArrivalDate(){
+  @Override
+  public Date getArrival(){
     return arrivalDate;
   }
 
   /**
-   * get the arrival time
-   * @return arrival time
+   * Pretty print the flight's information
+   * @return the pretty text of the flight
    */
-  public String getArrivalTime(){
-    return arrivalTime;
+  public String prettyPrint(){
+    long duration = arrivalDate.getTime() - departDate.getTime();
+    long diffMin = (duration / (1000 * 60)) % 60;
+    long diffHr = (duration / (1000 * 60 * 60)) % 24;
+    long diffDay = (duration / (1000 * 60 * 60 * 24)) % 365;
+    String length;
+    if(diffDay == 0){
+      length = "The duration of the flight " + this.getNumber() + " is " + diffHr + " hours " + diffMin + " minutes.";
+    } else{
+      length = "The duration of the flight " + this.getNumber() + " is " + diffDay + " day " + diffHr + " hours " + diffMin + " minutes.";
+    }
+
+    int f = DateFormat.SHORT;
+    DateFormat df = DateFormat.getDateTimeInstance(f,f);
+    return "Flight " + this.getNumber() + " departs from " + AirportNames.getName(source) + " at " + this.getDepartureString()
+            + " arrives at " + AirportNames.getName(destination) + " at " + this.getArrivalString() + '\n'
+            + length;
   }
+
 }

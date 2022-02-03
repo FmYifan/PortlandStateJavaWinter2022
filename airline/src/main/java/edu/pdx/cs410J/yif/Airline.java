@@ -4,6 +4,7 @@ import edu.pdx.cs410J.AbstractAirline;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * The class that extends AbstractAirline. An airline contains a name, and a flightList which consists of multiple flights.
@@ -44,7 +45,6 @@ public class Airline extends AbstractAirline<Flight> {
    */
   @Override
   public void addFlight(Flight flight) {
-    //throw new UnsupportedOperationException("This method is not implemented yet");
     flightList.add(flight);
   }
 
@@ -54,7 +54,13 @@ public class Airline extends AbstractAirline<Flight> {
    */
   @Override
   public ArrayList<Flight> getFlights() {
-    //throw new UnsupportedOperationException("This method is not implemented yet");
     return flightList;
+  }
+
+  /**
+   * Sort the flightLiat
+   */
+  public void sortFlights(){
+    Collections.sort(flightList);
   }
 }

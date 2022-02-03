@@ -5,6 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -61,7 +66,19 @@ public class TextDumperTest {
   void canParseAirlineFlightWrittenByTextDumper(@TempDir File tempDir) throws IOException, ParserException {
     String airlineName = "Test Airline";
     Airline airline = new Airline(airlineName);
-    Flight flight = new Flight(2, "src", "10/19/2022", "0:0", "des", "1/20/2022", "12:30");
+    DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.US);
+    String f1 = "05/04/2022 09:08 AM";
+    String f2 = "05/4/2022 9:09 pm";
+    Date depart = null;
+    Date arrival = null;
+    try {
+      depart = df.parse(f1.trim());
+      arrival = df.parse(f2.trim());
+    } catch (ParseException e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
+    Flight flight = new Flight(3, "PDX", depart, "LAX", arrival);
     airline.addFlight(flight);
 
     File textFile = new File(tempDir, "airline.txt");
@@ -71,7 +88,7 @@ public class TextDumperTest {
     TextParser parser = new TextParser(new FileReader(textFile));
     Airline read = parser.parse();
     assertThat(read.getName(), equalTo(airlineName));
-    assertThat(read.getFlights().get(0).toString(), equalTo("Flight 2 departs src at 10/19/2022 0:0 arrives des at 1/20/2022 12:30"));
+    assertThat(read.getFlights().get(0).toString(), equalTo("Flight 3 departs PDX at 5/4/22, 9:08 AM arrives LAX at 5/4/22, 9:09 PM"));
   }
 
   /**
@@ -84,8 +101,20 @@ public class TextDumperTest {
   void canParseMultipleFlightsWrittenByTextDumper(@TempDir File tempDir) throws IOException, ParserException {
     String airlineName = "Test Airline";
     Airline airline = new Airline(airlineName);
-    Flight flight1 = new Flight(2, "src", "10/19/2022", "0:0", "des", "1/20/2022", "12:30");
-    Flight flight2 = new Flight(4, "pdx", "10/19/2022", "0:0", "sea", "1/20/2022", "12:30");
+    DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.US);
+    String f1 = "05/04/2022 09:08 am";
+    String f2 = "05/05/2022 09:09 pm";
+    Date depart = null;
+    Date arrival = null;
+    try {
+      depart = df.parse(f1.trim());
+      arrival = df.parse(f2.trim());
+    } catch (ParseException e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
+    Flight flight1 = new Flight(3, "PDX", depart, "LAX", arrival);
+    Flight flight2 = new Flight(3, "ABE", depart, "LAX", arrival);
     airline.addFlight(flight1);
     airline.addFlight(flight2);
 
@@ -96,8 +125,8 @@ public class TextDumperTest {
     TextParser parser = new TextParser(new FileReader(textFile));
     Airline read = parser.parse();
     assertThat(read.getName(), equalTo(airlineName));
-    assertThat(read.getFlights().get(0).toString(), equalTo("Flight 2 departs src at 10/19/2022 0:0 arrives des at 1/20/2022 12:30"));
-    assertThat(read.getFlights().get(1).toString(), equalTo("Flight 4 departs pdx at 10/19/2022 0:0 arrives sea at 1/20/2022 12:30"));
+    assertThat(read.getFlights().get(0).toString(), equalTo("Flight 3 departs ABE at 5/4/22, 9:08 AM arrives LAX at 5/5/22, 9:09 PM"));
+    assertThat(read.getFlights().get(1).toString(), equalTo("Flight 3 departs PDX at 5/4/22, 9:08 AM arrives LAX at 5/5/22, 9:09 PM"));
   }
 
 }

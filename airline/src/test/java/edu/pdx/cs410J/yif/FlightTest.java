@@ -1,6 +1,13 @@
 package edu.pdx.cs410J.yif;
 
+import edu.pdx.cs410J.AirportNames;
 import org.junit.jupiter.api.Test;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -40,10 +47,10 @@ public class FlightTest {
   }
 
   /**
-   * This tests if the getDeparture can return null
+   * This tests if the departure date and time can be null and return null in the getDeparture
    */
   @Test
-  void forProject1ItIsOkayIfGetDepartureTimeReturnsNull() {
+  void getDepartureReturnsNull() {
     Flight flight = new Flight();
     assertThat(flight.getDeparture(), is(nullValue()));
   }
@@ -67,11 +74,38 @@ public class FlightTest {
   }
 
   /**
-   * This tests if the getArrival can return null
+   * This tests if the arrival date and time can be null and return null in the getDeparture
    */
   @Test
-  void forProject1ItIsOkayIfGetArrivalTimeReturnsNull() {
+  void getArrivalReturnsNull() {
     Flight flight = new Flight();
     assertThat(flight.getArrival(), is(nullValue()));
   }
+
+  /**
+   * This tests if the pretty print works correctly
+   */
+  @Test
+  void prettyPrintWorks() {
+    Airline airline = new Airline();
+    DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.US);
+    String f1 = "05/04/2022 09:08 am";
+    String f2 = "05/04/2022 4:12 pm";
+    Date depart = null;
+    Date arrival = null;
+    try {
+      depart = df.parse(f1.trim());
+      arrival = df.parse(f2.trim());
+    } catch (ParseException e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
+    Flight flight = new Flight(3, "PDX", depart, "LAX", arrival);
+    airline.addFlight(flight);
+    airline.sortFlights();
+    assertThat(flight.prettyPrint(), equalTo("Flight 3 departs from " + AirportNames.getName("PDX") + " at " + flight.getDepartureString()
+            + " arrives at " + AirportNames.getName("LAX") + " at " + flight.getArrivalString() + '\n'
+            + "The duration of the flight 3 is 7 hours 4 minutes."));
+  }
+
 }

@@ -65,7 +65,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>edu.pdx.cs410J.yif.Project1</mainClass>
+              <mainClass>edu.pdx.cs410J.yif.Project3</mainClass>
             </manifest>
           </archive>
         </configuration>

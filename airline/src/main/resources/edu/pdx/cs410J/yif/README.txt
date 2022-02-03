@@ -1,24 +1,22 @@
 This is a README file!
 Yifan Zhao
 CS410J
-Project 2: Storing An Airline in a Text File
-For this project, the TextParser and TextDumper has implemented. The TextParser implements AirlineParser, and the TextDumper implements AirlineDumper.
-Parsing the command line has been implemented in class project2.
-For TextParser, parse() has been overridden to read the contents of a text file, and from it create an airline with its associated flights.
-For TextDumper, dump() has been overridden to dump the contents of an airline and its flights into a text file.
-
-The format for the data in the file is shown below:
+Project 3: Pretty Printing Your Airline
+For this project, the PrettyPrinter has implemented. Also, the Flight and Airline Classes have been modified to support the sorting function. They also use the Date as their fields.
+Parsing the command line has been implemented in class Project3.
+The format for the parsable data has been modified.
+The modified version is shown as below:
 airline 		The name of the airline
 flightNumber 		The flight number
 src 		Three-letter code of departure airport
-departDate 		Departure date (24-hour time)
-departTime 		Departure time (24-hour time)
+departDate 		MM/dd/yyyy hh:mm aa
 dest 		Three-letter code of arrival airport
-arriveDate 		Arrival date (24-hour time)
-arriveDate 		Arrival time (24-hour time)
+arriveDate 	MM/dd/yyyy hh:mm aa
 
 Through the options specified by the command line arguments "-print" and "-README", program can print a description of the Flight or print the content of README.
-In addition, the option "-textFile file" can make user load from and write back to a file specified in the command line.
+The option "-textFile file" can make user load from and write back to a file specified in the command line.
+The new option "-pretty file" can pretty print the airline and flights to the file specified.
+If "-" presents for the "file" field, then the information will be printed to the screen.
 
 The usage of this program is shown as below:
     java edu.pdx.cs410J.<login-id>.Project1 [options] <args>
@@ -26,10 +24,12 @@ The usage of this program is shown as below:
         airline     The name of the airline
         flightNumber    The flight number
         src     Three-letter code of departure airport
-        depart  Departure date and time (24-hour time)
+        depart  Departure date and time (12-hour time)
         dest    Three-letter code of arrival airport
-        arrive   Arrival date and time (24-hour time)
+        arrive   Arrival date and time (12-hour time)
     options are (options may appear in any order):
+        -pretty file    Pretty print the airline’s flights to
+                        a text file or standard out (file -)
         -textFile file  Where to read/write the airline info
         -print  Prints a description of the new flight
         -README     Prints a README for this project and exits

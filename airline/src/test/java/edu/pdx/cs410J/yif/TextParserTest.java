@@ -60,7 +60,19 @@ public class TextParserTest {
    */
   @Test
   void testNonThreeLettersSrc(){
-    InputStream resource = getClass().getResourceAsStream("invalidSrc.txt");
+    InputStream resource = getClass().getResourceAsStream("invalidSrc1.txt");
+    assertThat(resource, notNullValue());
+
+    TextParser parser = new TextParser(new InputStreamReader(resource));
+    assertThrows(ParserException.class, parser::parse);
+  }
+
+  /**
+   * Tests that a source code does not present in the collection of known airports issues an error
+   */
+  @Test
+  void testNonPresentSrc(){
+    InputStream resource = getClass().getResourceAsStream("invalidSrc2.txt");
     assertThat(resource, notNullValue());
 
     TextParser parser = new TextParser(new InputStreamReader(resource));
@@ -96,7 +108,19 @@ public class TextParserTest {
    */
   @Test
   void testNonThreeLettersDest(){
-    InputStream resource = getClass().getResourceAsStream("invalidDest.txt");
+    InputStream resource = getClass().getResourceAsStream("invalidDest1.txt");
+    assertThat(resource, notNullValue());
+
+    TextParser parser = new TextParser(new InputStreamReader(resource));
+    assertThrows(ParserException.class, parser::parse);
+  }
+
+  /**
+   * Tests that a destination code does not present in the collection of known airports issues an error
+   */
+  @Test
+  void testNonPresentDest(){
+    InputStream resource = getClass().getResourceAsStream("invalidDest2.txt");
     assertThat(resource, notNullValue());
 
     TextParser parser = new TextParser(new InputStreamReader(resource));
@@ -140,6 +164,18 @@ public class TextParserTest {
   }
 
   /**
+   * Tests that an earlier arrival date issues an error
+   */
+  @Test
+  void earlierArrivalDate(){
+    InputStream resource = getClass().getResourceAsStream("earlierArrivalDate.txt");
+    assertThat(resource, notNullValue());
+
+    TextParser parser = new TextParser(new InputStreamReader(resource));
+    assertThrows(ParserException.class, parser::parse);
+  }
+
+  /**
    * test valid text file (including airline and flights) can be parsed
    * @throws ParserException parse() may throw a ParserException
    */
@@ -152,8 +188,8 @@ public class TextParserTest {
     Airline airline = parser.parse();
     ArrayList<Flight> list = airline.getFlights();
     assertThat(airline.getName(), equalTo("test airline"));
-    assertThat(list.get(0).toString(), equalTo("Flight 410 departs src at 1/1/2022 0:0 arrives des at 1/2/2022 12:10"));
-    assertThat(list.get(1).toString(), equalTo("Flight 410 departs pdx at 1/20/2022 3:15 arrives lax at 2/10/2022 4:00"));
+    assertThat(list.get(0).toString(), equalTo("Flight 410 departs HRL at 1/20/22, 3:15 AM arrives HSV at 2/10/22, 4:00 PM"));
+    assertThat(list.get(1).toString(), equalTo("Flight 410 departs PDX at 1/1/22, 12:00 AM arrives PDX at 1/2/22, 12:10 AM"));
   }
 
 }

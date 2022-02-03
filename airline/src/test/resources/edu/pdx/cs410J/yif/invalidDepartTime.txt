@@ -1,8 +1,6 @@
-test airline
+Test Airline
 410
-src
-1/10/2022
-0:100
-des
-1/2/2022
-12:00
+PDX
+1/10/2022 0:100 am
+PDX
+1/2/2022 0:0 am

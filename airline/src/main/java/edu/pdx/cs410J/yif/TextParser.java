@@ -1,12 +1,18 @@
 package edu.pdx.cs410J.yif;
 
 import edu.pdx.cs410J.AirlineParser;
+import edu.pdx.cs410J.AirportNames;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class TextParser implements AirlineParser<Airline> {
   private final Reader reader;
@@ -29,18 +35,16 @@ public class TextParser implements AirlineParser<Airline> {
 
       Airline airline = new Airline(airlineName);
       int flightNumber;
+      Date departDate;
+      Date arriveDate;
       String src;
-      String departDate;
-      String departTime;
       String dest;
-      String arriveDate;
-      String arriveTime;
 
       while(br.ready()){
         try{
           flightNumber = Integer.parseInt(br.readLine());
         } catch(NumberFormatException nfe){
-          throw new ParserException("While parsing the file, the flight number is non-numeric", nfe);
+          throw new IOException();
         }
 
         if(br.ready()) {
@@ -52,27 +56,28 @@ public class TextParser implements AirlineParser<Airline> {
             }
           }
           if (src.chars().count() != 3 || countLetters != 3) {
-            throw new ParserException("While parsing the file, the source airport code does not contain three letters.");
+            throw new IOException();
           }
         } else {
-          throw new IOException("The flight number is missing");
+          throw new IOException();
+        }
+        src = src.toUpperCase();
+        if(!AirportNames.getNamesMap().containsKey(src)){
+          throw new IOException();
         }
 
         if(br.ready()) {
-          departDate = br.readLine();
-          if (!departDate.matches("\\d{1,2}/\\d{1,2}/\\d{4}")) {
-            throw new ParserException("While parsing the file, the format of the departure date is incorrect.");
+          String departTemp = br.readLine();
+          DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.US);
+          dateFormat.setLenient(false);
+          try {
+            departDate = dateFormat.parse(departTemp.trim());
+          } catch (ParseException e) {
+            //e.printStackTrace();
+            throw new IOException();
           }
         } else{
-          throw new IOException("The departure date is missing");
-        }
-        if(br.ready()){
-          departTime = br.readLine();
-          if (!departTime.matches("\\d{1,2}:\\d{1,2}")) {
-            throw new ParserException("While parsing the file, the format of the departure time is incorrect.");
-          }
-        } else{
-          throw new IOException("The departure time is missing");
+          throw new IOException();
         }
 
         if(br.ready()) {
@@ -84,41 +89,47 @@ public class TextParser implements AirlineParser<Airline> {
             }
           }
           if (dest.chars().count() != 3 || countLetters != 3) {
-            throw new ParserException("While parsing the file, the destination airport code does not contain three letters.");
+            throw new IOException();
           }
         } else{
-          throw new IOException("The destination is missing");
+          throw new IOException();
+        }
+        dest = dest.toUpperCase();
+        if(!AirportNames.getNamesMap().containsKey(dest)){
+          throw new IOException();
         }
 
         if(br.ready()) {
-          arriveDate = br.readLine();
-          if (!arriveDate.matches("\\d{1,2}/\\d{1,2}/\\d{4}")) {
-            throw new ParserException("While parsing the file, the format of the arrival date is incorrect.");
+          String arriveTemp = br.readLine();
+          DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.US);
+          dateFormat.setLenient(false);
+          try {
+            arriveDate = dateFormat.parse(arriveTemp.trim());
+          } catch (ParseException e) {
+            //e.printStackTrace();
+            throw new IOException();
           }
         } else{
-          throw new IOException("The arrival date is missing");
+          throw new IOException();
         }
 
-        if(br.ready()) {
-          arriveTime = br.readLine();
-          if (!arriveTime.matches("\\d{1,2}:\\d{1,2}")) {
-            throw new ParserException("While parsing the file, the format of the arrival time is incorrect.");
-          }
-        } else{
-          throw new IOException("The arrival time is missing");
+        if(arriveDate.before(departDate)){
+          throw new IOException();
         }
 
-        Flight flight = new Flight(flightNumber, src, departDate, departTime, dest, arriveDate, arriveTime);  // Refer to one of Dave's classes so that we can be sure it is on the classpath
+        Flight flight = new Flight(flightNumber, src, departDate, dest, arriveDate);  // Refer to one of Dave's classes so that we can be sure it is on the classpath
 
         airline.addFlight(flight);
 
       }
 
+      airline.sortFlights();
+
       return airline;
 
     } catch (IOException e) {
       System.err.print(e.getMessage());
-      throw new ParserException(" while parsing airline text", e);
+      throw new ParserException("While parsing airline text", e);
     }
   }
 }
