@@ -15,9 +15,9 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * The main class for the CS410J airline Project 3
+ * The main class for the CS410J airline Project 4
  */
-public class Project3 {
+public class Project4 {
 
   /**
    * The main method
@@ -28,9 +28,8 @@ public class Project3 {
 
     //if no argument is provided, prompt the usage
     if(args.length == 0){
-      //System.out.println("No command line arguments are passed in.");
       System.err.println("Missing command line arguments");
-      System.out.println("usage: java edu.pdx.cs410J.<login-id>.Project3 [options] <args>\n" +
+      System.out.println("usage: java edu.pdx.cs410J.<login-id>.Project4 [options] <args>\n" +
               "args are (in this order):\n" +
               "airline \t The name of the airline\n" +
               "flightNumber \t The flight number\n" +
@@ -39,6 +38,7 @@ public class Project3 {
               "dest \t Three-letter code of arrival airport\n" +
               "arrive \t Arrival date and time (am/pm)\n" +
               "options are (options may appear in any order):\n" +
+              "-xmlFile file Where to read/write the airline info\n" +
               "-pretty file Pretty print the airline’s flights to\n" +
                       "a text file or standard out (file -)\n" +
               "-textFile file  Where to read/write the airline info\n" +
@@ -53,8 +53,12 @@ public class Project3 {
     int newFileFlag = 0;
     int prettyStd = 0;
     int prettyFlag = 0;
+    int xmlFileFlag = 0;
+    int newXmlFileFlag = 0;
     File file = null;
     File prettyFile = null;
+    File xmlFile = null;
+    Path temp;
     int i;
     for(i = 0; i < args.length && args[i].startsWith("-"); i++){
       //For option -print, print the information for the flight later
@@ -65,7 +69,7 @@ public class Project3 {
 
         //For option -README, print the README and end the program
         case "-README":
-          InputStream readme = Project3.class.getResourceAsStream("README.txt");
+          InputStream readme = Project4.class.getResourceAsStream("README.txt");
           BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
           String line;
           while ((line = reader.readLine()) != null) {
@@ -76,7 +80,7 @@ public class Project3 {
           //For option -textFile, load from and write back to the file specified
         case "-textFile":
           fileFlag = 1;
-          Path temp = Paths.get(args[++i]);
+          temp = Paths.get(args[++i]);
           if(temp.isAbsolute()){
             file = new File(String.valueOf(temp));
           }
@@ -118,11 +122,34 @@ public class Project3 {
 
           break;
 
+        case "-xmlFile":
+          xmlFileFlag = 1;
+          temp = Paths.get(args[++i]);
+          if(temp.isAbsolute()){
+            xmlFile = new File(String.valueOf(temp));
+          }
+          else {
+            File curDir = new File(System.getProperty("user.dir"));
+            if(String.valueOf(temp).startsWith("/")){
+              xmlFile = new File(curDir.getAbsolutePath() + temp);
+            } else {
+              xmlFile = new File(curDir.getAbsolutePath() + "/" + temp);
+            }
+          }
+          if(xmlFile.createNewFile()){
+            newXmlFileFlag = 1;
+          }
+          break;
+
         default:
           System.err.println("An unknown option was present.");
           System.exit(1);
       }
+    }
 
+    if(fileFlag == 1 && xmlFileFlag == 1){
+      System.err.println("Error: -textFile and -xmlFile are both specified.");
+      System.exit(1);
     }
 
     //Check if there are missing arguments or extraneous arguments
@@ -258,12 +285,43 @@ public class Project3 {
       dumper.dump(airline);
     }
 
-    //Without -textFile option
-    else {
+
+    //With -xmlFile option
+    if(xmlFileFlag == 1){
+      XmlParser parser = new XmlParser(xmlFile);
+      //If it's not a new file
+      if(newXmlFileFlag != 1) {
+        try {
+          airline = parser.parse();
+        } catch (ParserException e) {
+          System.err.println("Have an error during parsing the file. The xml file cannot be parsed.");
+          System.exit(1);
+        }
+        if (airline != null) {
+          if (!Objects.equals(airline.getName(), name)) {
+            System.err.println("The airline name loaded from the file specified is not the same as the name passed through command line.");
+            System.exit(1);
+          }
+        }
+      }
+      //If it's a new file
+      else{
+        airline = new Airline(name);
+      }
+
+      XmlDumper dumper = new XmlDumper(xmlFile);
+      airline.addFlight(flight);
+      airline.sortFlights();
+      dumper.dump(airline);
+    }
+
+    //Without -textFile and -xmlFile option
+    if(fileFlag == 0 && xmlFileFlag == 0){
       airline = new Airline(name);
       airline.addFlight(flight);
     }
 
+    //With -pretty option
     if(prettyFlag == 1){
       if(prettyStd == 1){
         System.out.println("Airline Name: " + airline.getName());

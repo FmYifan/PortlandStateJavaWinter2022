@@ -12,7 +12,7 @@ import static com.sandwich.koan.constant.KoanConstants.__;
 import static com.sandwich.util.Assert.assertEquals;
 
 
-public class AboutDates {
+public class    AboutDates {
 
     private Date date = new Date(100010001000L);
 

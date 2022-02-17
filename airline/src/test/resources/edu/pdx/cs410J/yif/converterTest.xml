@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE airline SYSTEM "http://www.cs.pdx.edu/~whitlock/dtds/airline.dtd">
+<airline>
+    <name>test airline</name>
+    <flight>
+        <number>410</number>
+        <src>HRL</src>
+        <depart>
+            <date day="20" month="0" year="2022"/>
+            <time hour="3" minute="15"/>
+        </depart>
+        <dest>HSV</dest>
+        <arrive>
+            <date day="10" month="1" year="2022"/>
+            <time hour="16" minute="0"/>
+        </arrive>
+    </flight>
+    <flight>
+        <number>410</number>
+        <src>PDX</src>
+        <depart>
+            <date day="1" month="0" year="2022"/>
+            <time hour="0" minute="0"/>
+        </depart>
+        <dest>PDX</dest>
+        <arrive>
+            <date day="2" month="0" year="2022"/>
+            <time hour="0" minute="10"/>
+        </arrive>
+    </flight>
+</airline>
