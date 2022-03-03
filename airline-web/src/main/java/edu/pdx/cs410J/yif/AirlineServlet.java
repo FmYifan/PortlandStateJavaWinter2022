@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.yif;
 
 import com.google.common.annotations.VisibleForTesting;
+import edu.pdx.cs410J.AirportNames;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -44,10 +45,41 @@ public class AirlineServlet extends HttpServlet {
         String flightNumber = getParameter( FLIGHT_NUMBER_PARAMETER, request );
         String departure = getParameter( DEPARTURE_PARAMETER, request );
         String arrival = getParameter( ARRIVAL_PARAMETER, request );
+
         if (airlineName == null) {
             missingRequiredParameter(response,AIRLINE_NAME_PARAMETER);
         } else if(source != null && destination != null && flightNumber == null && departure == null && arrival == null) {
+
+            int countLetters = 0;
+            for (int j = 0; j < source.length(); j++) {
+                if (Character.isLetter(source.charAt(j))) {
+                    countLetters++;
+                }
+            }
+            if (source.chars().count() != 3 || countLetters != 3) {
+                throw new IOException("The source airport code does not contain three letters.");
+            }
+            source = source.toUpperCase();
+            if (!AirportNames.getNamesMap().containsKey(source)) {
+                throw new IOException("The source airport code does not correspond to a known airport.");
+            }
+
+            countLetters = 0;
+            for (int j = 0; j < destination.length(); j++) {
+                if (Character.isLetter(destination.charAt(j))) {
+                    countLetters++;
+                }
+            }
+            if (destination.chars().count() != 3 || countLetters != 3) {
+                throw new IOException("The destination airport code does not contain three letters.");
+            }
+            destination = destination.toUpperCase();
+            if (!AirportNames.getNamesMap().containsKey(destination)) {
+                throw new IOException("The destination airport code does not correspond to a known airport.");
+            }
+
             dumpSearchAirline(airlineName, source, destination, response);
+
         } else{
             dumpAirline(airlineName, response);
         }

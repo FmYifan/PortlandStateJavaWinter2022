@@ -79,13 +79,23 @@ public class Project5 {
 
                 case "-search":
                     searchFlag = 1;
-                    if(i + 3 > args.length - 1){
-                        error("There should be an airline name, a source airport, and a destination airport for the option \"-search\"");
-                        return;
-                    }
-                    airlineName = args[++i];
 
-                    src = args[++i];
+                    break;
+
+                default:
+                    error("An unknown option was present.");
+                    System.exit(1);
+            }
+        }
+
+        if(searchFlag == 1) {
+            for(; i < args.length; ++i) {
+                if(airlineName == null) {
+                    airlineName = args[i];
+                }
+
+                else if(src == null) {
+                    src = args[i];
                     int countLetters = 0;
                     for (int j = 0; j < src.length(); j++) {
                         if (Character.isLetter(src.charAt(j))) {
@@ -101,36 +111,39 @@ public class Project5 {
                         error("The source airport code does not correspond to a known airport.");
                         System.exit(1);
                     }
+                }
 
-                    dest = args[++i];
-                    countLetters = 0;
-                    for(int j = 0; j < dest.length(); j++){
-                        if(Character.isLetter(dest.charAt(j))){
+                else if(dest == null) {
+                    dest = args[i];
+                    int countLetters = 0;
+                    for (int j = 0; j < dest.length(); j++) {
+                        if (Character.isLetter(dest.charAt(j))) {
                             countLetters++;
                         }
                     }
-                    if(dest.chars().count() != 3 || countLetters != 3){
+                    if (dest.chars().count() != 3 || countLetters != 3) {
                         error("The destination airport code does not contain three letters.");
                         System.exit(1);
                     }
                     dest = dest.toUpperCase();
-                    if(!AirportNames.getNamesMap().containsKey(dest)){
+                    if (!AirportNames.getNamesMap().containsKey(dest)) {
                         error("The destination airport code does not correspond to a known airport.");
                         System.exit(1);
                     }
-                    break;
-
-                default:
-                    error("An unknown option was present.");
-                    System.exit(1);
+                }
             }
+
+            if(airlineName == null || src == null || dest == null){
+                error("There should be an airline name, a source airport, and a destination airport for the option \"-search\"");
+                System.exit(1);
+            }
+
         }
 
 
 
-        StringBuilder sb;
-
         if(searchFlag == 0) {
+            StringBuilder sb;
             for (; i < args.length; i++) {
                 if (airlineName == null) {
                     airlineName = args[i];
@@ -191,9 +204,15 @@ public class Project5 {
         try {
             if (searchFlag == 1) {
                 // Print all flights that originate at the src airport and terminate at the dest airport
-                airline = client.getSearchedSrcDestAirline(airlineName, src, dest);
-                if(!airline.prettyPrintAllFlights()){
-                    System.out.println("There is no direct flight between the specified airports for this airline.");
+                try {
+                    airline = client.getSearchedSrcDestAirline(airlineName, src, dest);
+                    if(!airline.prettyPrintAllFlights()){
+                        System.out.println("There is no direct flight between the specified airports for this airline.");
+                    }
+                } catch (HttpRequestHelper.RestException e){
+                    error("While contacting server: " + e.getHttpStatusCode());
+                } catch (IOException e){
+                    error("While contacting server: " + e.getMessage());
                 }
 
             } else if (airlineName != null && flightNumber != null && src != null && depart != null && dest != null && arrive != null) {
@@ -206,9 +225,14 @@ public class Project5 {
 
             } else if (airlineName != null && flightNumber == null && src == null && depart == null && dest == null && arrive == null){
                 //pretty print all flights in an airline
-                airline = client.getAirline(airlineName);
-                if(!airline.prettyPrintAllFlights()){
-                    System.out.println("There is no flight in this airline.");
+                try {
+                    airline = client.getAirline(airlineName);
+                    if (!airline.prettyPrintAllFlights()) {
+                        System.out.println("There is no flight in this airline.");
+                    }
+                } catch (HttpRequestHelper.RestException ex){
+                    error("While contacting server, the airline cannot be found");
+                    return;
                 }
 
             } else if(airlineName == null){
