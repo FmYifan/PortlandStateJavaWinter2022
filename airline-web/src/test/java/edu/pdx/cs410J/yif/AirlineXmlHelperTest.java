@@ -32,7 +32,7 @@ class AirlineXmlHelperTest {
     builder.setEntityResolver(helper);
 
     File curDir = new File(System.getProperty("user.dir"));
-    File file = new File(curDir.getAbsolutePath() + "/src/test/resources/valid-airline.xml");
+    File file = new File(curDir.getAbsolutePath() + "/src/test/resources/edu/pdx/cs410J/yif/valid-airline.xml");
     assertThat(file, notNullValue());
 
     InputStream targetStream = new ReaderInputStream(new FileReader(file), Charsets.UTF_8);
@@ -55,7 +55,7 @@ class AirlineXmlHelperTest {
 
 
     File curDir = new File(System.getProperty("user.dir"));
-    File file = new File(curDir.getAbsolutePath() + "/src/test/resources/invalid-airline.xml");
+    File file = new File(curDir.getAbsolutePath() + "/src/test/resources/edu/pdx/cs410J/yif/invalid-airline.xml");
     assertThat(file, notNullValue());
 
     InputStream targetStream = new ReaderInputStream(new FileReader(file), Charsets.UTF_8);

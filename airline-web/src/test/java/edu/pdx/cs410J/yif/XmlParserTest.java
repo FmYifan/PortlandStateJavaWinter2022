@@ -26,7 +26,7 @@ public class XmlParserTest {
     void validTextFileCanBeParsed() throws ParserException, FileNotFoundException {
 
         File curDir = new File(System.getProperty("user.dir"));
-        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/valid-airline.xml");
+        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/edu/pdx/cs410J/yif/valid-airline.xml");
         assertThat(file, notNullValue());
         XmlParser parser = new XmlParser(new FileReader(file));
         Airline airline = parser.parse();
@@ -39,7 +39,7 @@ public class XmlParserTest {
     @Test
     void invalidTextFileThrowsParserException() throws FileNotFoundException {
         File curDir = new File(System.getProperty("user.dir"));
-        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/invalid-airline.xml");
+        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/edu/pdx/cs410J/yif/invalid-airline.xml");
         assertThat(file, notNullValue());
 
         XmlParser parser = new XmlParser(new FileReader(file));
@@ -53,7 +53,7 @@ public class XmlParserTest {
     void testNonNumericFlightNumber() throws FileNotFoundException {
 
         File curDir = new File(System.getProperty("user.dir"));
-        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/invalidFlightNumber.xml");
+        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/edu/pdx/cs410J/yif/invalidFlightNumber.xml");
         assertThat(file, notNullValue());
 
 
@@ -68,7 +68,7 @@ public class XmlParserTest {
     void testNonThreeLettersDest() throws FileNotFoundException {
 
         File curDir = new File(System.getProperty("user.dir"));
-        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/invalidDest1.xml");
+        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/edu/pdx/cs410J/yif/invalidDest1.xml");
         assertThat(file, notNullValue());
 
 
@@ -83,7 +83,7 @@ public class XmlParserTest {
     void testNonPresentDest() throws FileNotFoundException {
 
         File curDir = new File(System.getProperty("user.dir"));
-        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/invalidDest2.xml");
+        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/edu/pdx/cs410J/yif/invalidDest2.xml");
         assertThat(file, notNullValue());
 
         XmlParser parser = new XmlParser(new FileReader(file));
@@ -97,7 +97,7 @@ public class XmlParserTest {
     void testIncorrectArrivalDate() throws FileNotFoundException {
 
         File curDir = new File(System.getProperty("user.dir"));
-        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/invalidArrivalDate.xml");
+        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/edu/pdx/cs410J/yif/invalidArrivalDate.xml");
         assertThat(file, notNullValue());
 
         XmlParser parser = new XmlParser(new FileReader(file));
@@ -110,7 +110,7 @@ public class XmlParserTest {
     @Test
     void testIncorrectArrivalTime() throws FileNotFoundException {
         File curDir = new File(System.getProperty("user.dir"));
-        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/invalidArrivalTime.xml");
+        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/edu/pdx/cs410J/yif/invalidArrivalTime.xml");
         assertThat(file, notNullValue());
 
         XmlParser parser = new XmlParser(new FileReader(file));
@@ -123,7 +123,7 @@ public class XmlParserTest {
     @Test
     void testMissingData() throws FileNotFoundException {
         File curDir = new File(System.getProperty("user.dir"));
-        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/missingData.xml");
+        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/edu/pdx/cs410J/yif/missingData.xml");
         assertThat(file, notNullValue());
 
         XmlParser parser = new XmlParser(new FileReader(file));
@@ -136,7 +136,7 @@ public class XmlParserTest {
     @Test
     void earlierArrival() throws FileNotFoundException {
         File curDir = new File(System.getProperty("user.dir"));
-        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/earlyArrival.xml");
+        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/edu/pdx/cs410J/yif/earlyArrival.xml");
         assertThat(file, notNullValue());
 
         XmlParser parser = new XmlParser(new FileReader(file));
@@ -150,7 +150,7 @@ public class XmlParserTest {
     @Test
     void validWholeFileCanBeParsed() throws ParserException, FileNotFoundException {
         File curDir = new File(System.getProperty("user.dir"));
-        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/valid-airline.xml");
+        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/edu/pdx/cs410J/yif/valid-airline.xml");
         assertThat(file, notNullValue());
 
         XmlParser parser = new XmlParser(new FileReader(file));

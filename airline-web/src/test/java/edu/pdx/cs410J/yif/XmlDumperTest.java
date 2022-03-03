@@ -50,7 +50,7 @@ public class XmlDumperTest {
         airline.addFlight(flight);
 
         File curDir = new File(System.getProperty("user.dir"));
-        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/dumperTest.xml");
+        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/edu/pdx/cs410J/yif/dumperTest.xml");
         assertThat(file, notNullValue());
 
         XmlDumper dumper = new XmlDumper(new FileWriter(file));
@@ -92,7 +92,7 @@ public class XmlDumperTest {
 
 
         File curDir = new File(System.getProperty("user.dir"));
-        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/dumperTest2.xml");
+        File file = new File(curDir.getAbsolutePath() + "/src/test/resources/edu/pdx/cs410J/yif/dumperTest2.xml");
         assertThat(file, notNullValue());
 
         XmlDumper dumper = new XmlDumper(new FileWriter(file));
