@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.yif;
+package edu.pdx.cs410j.yif;
 
 import edu.pdx.cs410J.AbstractAirline;
 
@@ -46,6 +46,7 @@ public class Airline extends AbstractAirline<Flight> {
   @Override
   public void addFlight(Flight flight) {
     flightList.add(flight);
+    sortFlights();
   }
 
   /**
@@ -62,18 +63,5 @@ public class Airline extends AbstractAirline<Flight> {
    */
   public void sortFlights(){
     Collections.sort(flightList);
-  }
-
-  /**
-   * Pretty print all flights in the airline, if no flights in this airline, return false, otherwise, return true.
-   */
-  public boolean prettyPrintAllFlights(){
-    if(flightList.size() == 0){
-      return false;
-    }
-    for(Flight flight : flightList){
-      System.out.println(flight.prettyPrint());
-    }
-    return true;
   }
 }

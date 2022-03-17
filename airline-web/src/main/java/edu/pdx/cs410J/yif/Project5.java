@@ -5,6 +5,7 @@ import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.*;
+import java.util.Collection;
 import java.util.Map;
 
 /**
